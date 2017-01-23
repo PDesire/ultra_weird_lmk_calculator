@@ -11,9 +11,16 @@ import java.util.*;
  * @author PDesire
  */
 public class Main {
+    
+    //Enable Debug
+    public static boolean debug = true;
+    public static void pr_debug(String text) {
+        if (debug == true)
+            System.out.println(text);
+    }
 
     /*
-     * for future releases
+     * totalmemory (Max amount of RAM)
      */
     private static int totalmemory;
 
@@ -26,7 +33,7 @@ public class Main {
 
     /**
      * @param aTotalmemory the totalmemory to set
-     * m
+     * 
      */
     public static void setTotalmemory(int aTotalmemory) {
         totalmemory = aTotalmemory;
@@ -37,7 +44,7 @@ public class Main {
      * @param ramsize
      * @param strength
      */
-    public static void preCalculus(
+    public static void preCalculation(
             int ramsize,
             int strength) {
         double LMK1;
@@ -45,6 +52,7 @@ public class Main {
         double divisor = ramsize / 256;
 
         //Use "Circle Division" formula
+        pr_debug("Calculating with Circle Division Formula...");
         LMK1 = ((Math.sqrt(ramsize) * Math.sqrt(2) / Math.sqrt(3.14)) + (Math.sqrt(3.14) * ramsize) / divisor) / (Math.sqrt(3.14) * 2) / (3.14 * 2);
 
         //Multiplicate with some important Coefficients
@@ -70,6 +78,7 @@ public class Main {
         }
 
         //Low Memory Killer value generating
+        pr_debug("Generating LMK values...");
         double LMK2 = LMK1 * 2; //Low Memory Killer 2
         double LMK3 = LMK1 * 3; //Low Memory Killer 3
         double LMK4 = LMK1 * 4; //Low Memory Killer 4
@@ -77,6 +86,7 @@ public class Main {
         double LMK6 = LMK1 * 6; //Low Memory Killer 6 
 
         //Push values to folding method
+        pr_debug("Go to Folding Algorithm...");
         folding(LMK1, LMK2, LMK3, LMK4, LMK5, LMK6, strength);
     }
 
@@ -110,6 +120,7 @@ public class Main {
 
         //Folding Algorithm for LMK1-LMK4
         while (i != 5) {
+            pr_debug("Calculating with Folding Algorithm attempt " + i + "...");
             //Push values to store array
             folder[0] = store[i];
             folder[1] = store[i + 1];
@@ -141,11 +152,13 @@ public class Main {
         }
 
         //Don't calculate LMK5 and LMK6 to use them as boost values for LMK
+        pr_debug("Setting boost values...");
         LMKfolded[i] = LMK5;
         LMKfolded[i + 1] = LMK6;
 
         //Push values to postCalculus method
-        postCalculus(LMKfolded[0], LMKfolded[1], LMKfolded[2], LMKfolded[3], LMKfolded[4], LMKfolded[5]);
+        pr_debug("Go to Cooeficient Algorithm...");
+        postCalculation(LMKfolded[0], LMKfolded[1], LMKfolded[2], LMKfolded[3], LMKfolded[4], LMKfolded[5]);
     }
 
     /**
@@ -157,7 +170,7 @@ public class Main {
      * @param LMK5folded 5th folded Low Memory Killer value from folding method
      * @param LMK6folded 6th folded Low Memory Killer value from folding method
      */
-    public static void postCalculus(
+    public static void postCalculation(
             double LMK1folded,
             double LMK2folded,
             double LMK3folded,
@@ -165,6 +178,7 @@ public class Main {
             double LMK5folded,
             double LMK6folded) {
         double LMK1post, LMK2post, LMK3post, LMK4post, LMK5post, LMK6post;
+        pr_debug("Calculating with cooeficients...");
         //Coefficient calculating to fix bugs
         double coefficient1 = 2.7;
         double coefficient2 = 1.7;
@@ -172,6 +186,7 @@ public class Main {
         LMK2folded *= coefficient2;
 
         //Roundup to get integer like values
+        pr_debug("Round values...");
         LMK1post = Math.round(LMK1folded * 1) / 1;
         LMK2post = Math.round(LMK2folded * 1) / 1;
         LMK3post = Math.round(LMK3folded * 1) / 1;
@@ -192,6 +207,7 @@ public class Main {
      */
     public static void output(double LMK1, double LMK2, double LMK3, double LMK4, double LMK5, double LMK6) {
 
+        pr_debug("Convert numbers...");
         //Calculate in Kilobytes and then output
         System.out.println("");
         System.out.println("Your perfect LMK Settings in Kilobytes: ");
@@ -245,6 +261,6 @@ public class Main {
         setTotalmemory(power);
 
         //Push values to preCalculus method
-        preCalculus(totalram, power);
+        preCalculation(totalram, power);
     }
 }
